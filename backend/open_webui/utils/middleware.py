@@ -866,7 +866,7 @@ async def process_chat_payload(request, form_data, metadata, user, model):
 
 async def process_chat_response(
     request, response, form_data, user, events, metadata, tasks
-):
+): # Chat
     async def background_tasks_handler():
         message_map = Chats.get_messages_by_chat_id(metadata["chat_id"])
         message = message_map.get(metadata["message_id"]) if message_map else None
@@ -1269,7 +1269,7 @@ async def process_chat_response(
             if response.background is not None:
                 await response.background()
 
-        # background_tasks.add_task(post_response_handler, response, events)
+        # background_tasks.add_task(post_response_handler, response, events) # Chat
         task_id, _ = create_task(post_response_handler(response, events))
         return {"status": True, "task_id": task_id}
 
