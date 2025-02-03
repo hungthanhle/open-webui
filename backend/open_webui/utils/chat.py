@@ -58,7 +58,7 @@ async def generate_chat_completion(
     form_data: dict,
     user: Any,
     bypass_filter: bool = False,
-):
+): # Chat
     if BYPASS_MODEL_ACCESS_CONTROL:
         bypass_filter = True
 
@@ -137,7 +137,30 @@ async def generate_chat_completion(
             request, form_data, user=user, models=models
         )
     if model["owned_by"] == "ollama":
-        # Using /ollama/api/chat endpoint
+        # Using /ollama/api/chat endpoint # Chat
+        '''
+        curl -X POST http://localhost:11434/api/chat      -H "Content-Type: application/json"      -d '{ "model": "deepseek-r1:1.5b", "messages": [{"role": "user", "content": "1+1="}] }'
+        {"model":"deepseek-r1:1.5b","created_at":"2025-02-03T07:37:22.797055115Z","message":{"role":"assistant","content":"\u003cthink\u003e"},"done":false}
+        {"model":"deepseek-r1:1.5b","created_at":"2025-02-03T07:37:22.861222898Z","message":{"role":"assistant","content":"\n\n"},"done":false}
+        {"model":"deepseek-r1:1.5b","created_at":"2025-02-03T07:37:22.911787717Z","message":{"role":"assistant","content":"\u003c/think\u003e"},"done":false}
+        {"model":"deepseek-r1:1.5b","created_at":"2025-02-03T07:37:22.970280953Z","message":{"role":"assistant","content":"\n\n"},"done":false}
+        {"model":"deepseek-r1:1.5b","created_at":"2025-02-03T07:37:23.032679024Z","message":{"role":"assistant","content":"1"},"done":false}
+        {"model":"deepseek-r1:1.5b","created_at":"2025-02-03T07:37:23.085198884Z","message":{"role":"assistant","content":" +"},"done":false}
+        {"model":"deepseek-r1:1.5b","created_at":"2025-02-03T07:37:23.13655206Z","message":{"role":"assistant","content":" "},"done":false}
+        {"model":"deepseek-r1:1.5b","created_at":"2025-02-03T07:37:23.187917107Z","message":{"role":"assistant","content":"1"},"done":false}
+        {"model":"deepseek-r1:1.5b","created_at":"2025-02-03T07:37:23.339003256Z","message":{"role":"assistant","content":" 等"},"done":false}
+        {"model":"deepseek-r1:1.5b","created_at":"2025-02-03T07:37:23.394981385Z","message":{"role":"assistant","content":"于"},"done":false}
+        {"model":"deepseek-r1:1.5b","created_at":"2025-02-03T07:37:23.455721416Z","message":{"role":"assistant","content":" **"},"done":false}
+        {"model":"deepseek-r1:1.5b","created_at":"2025-02-03T07:37:23.507787085Z","message":{"role":"assistant","content":"2"},"done":false}
+        {"model":"deepseek-r1:1.5b","created_at":"2025-02-03T07:37:23.558379044Z","message":{"role":"assistant","content":"**"},"done":false}
+        {"model":"deepseek-r1:1.5b","created_at":"2025-02-03T07:37:23.609566875Z","message":{"role":"assistant","content":"。"},"done":false}
+        {"model":"deepseek-r1:1.5b","created_at":"2025-02-03T07:37:23.671078482Z","message":{"role":"assistant","content":""},"done_reason":"stop","done":true,"total_duration":1092177959,"load_duration":50743248,"prompt_eval_count":7,"prompt_eval_duration":163000000,"eval_count":17,"eval_duration":877000000}
+        '''
+
+        '''
+        curl -X POST http://localhost:11434/api/chat      -H "Content-Type: application/json"      -d '{ "model": "deepseek-r1:1.5b", "messages": [{"role": "user", "content": "1+1="}], "stream": false }'
+        {"model":"deepseek-r1:1.5b","created_at":"2025-02-03T07:40:46.278440287Z","message":{"role":"assistant","content":"\u003cthink\u003e\n\n\u003c/think\u003e\n\n您好，看起来您在问“1+1”这个问题。那么，“1加1等于多少？”当然是2！如果还有其他问题，我非常乐意帮助您。\n\n**答案：**\n1 + 1 = \\boxed{2}"},"done_reason":"stop","done":true,"total_duration":2713941888,"load_duration":54452840,"prompt_eval_count":7,"prompt_eval_duration":59000000,"eval_count":54,"eval_duration":2598000000}
+        '''
         form_data = convert_payload_openai_to_ollama(form_data)
         response = await generate_ollama_chat_completion(
             request=request, form_data=form_data, user=user, bypass_filter=bypass_filter

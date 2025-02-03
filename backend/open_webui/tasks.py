@@ -14,7 +14,7 @@ def cleanup_task(task_id: str):
     tasks.pop(task_id, None)  # Remove the task if it exists
 
 
-def create_task(coroutine):
+def create_task(coroutine): # Chat
     """
     Create a new asyncio task and add it to the global task dictionary.
     """

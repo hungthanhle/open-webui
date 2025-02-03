@@ -338,7 +338,7 @@ async def get_user_chat_list_by_tag_name(
 ############################
 
 
-@router.get("/{id}", response_model=Optional[ChatResponse])
+@router.get("/{id}", response_model=Optional[ChatResponse]) # Chat
 async def get_chat_by_id(id: str, user=Depends(get_verified_user)):
     chat = Chats.get_chat_by_id_and_user_id(id, user.id)
 

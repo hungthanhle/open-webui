@@ -480,7 +480,7 @@ class ChatTable:
         except Exception:
             return None
 
-    def get_chat_by_id_and_user_id(self, id: str, user_id: str) -> Optional[ChatModel]:
+    def get_chat_by_id_and_user_id(self, id: str, user_id: str) -> Optional[ChatModel]:  # Chat
         try:
             with get_db() as db:
                 chat = db.query(Chat).filter_by(id=id, user_id=user_id).first()
